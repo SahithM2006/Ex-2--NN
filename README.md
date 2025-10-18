@@ -49,11 +49,46 @@ STEP 9:For ‘N ‘ iterations ,do the following:<BR>
 STEP 10:Plot the error for each iteration <BR>
 STEP 11:Print the accuracy<BR>
 # PROGRAM:
-    ''' Insert your code here '''
+   ```
+    import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+class Perceptron:
+    def __init__(self,learning_rate=0.1):
+        self.learning_rate = learning_rate
+        self._b = 0.0  #y-intercept
+        self._w = None # weights assigned to input features
+        self.misclassified_samples = []
+    def fit(self, x: np.array, y: np.array, n_iter=10):
+        self._b = 0.0
+        self._w = np.zeros(x.shape[1])
+        self.misclassified_samples = []
+        for _ in range(n_iter):
+            # counter of the errors during this training interaction
+            errors = 0
+            for xi, yi in zip(x,y):
+                update = self.learning_rate * (yi - self.predict(xi))
+                self._b += update
+                self._w += update * xi
+                errors += int(update != 0.0)
+            self.misclassified_samples.append(errors)
+    def f(self, x: np.array) -> float:
+        return np.dot(x, self._w) + self._b
+    def predict(self, x: np.array):
+        return np.where(self.f(x) >= 0,1,-1)
+```
+    
 
 # OUTPUT:
 
-    ''' Show your result '''
+<img width="806" height="302" alt="Screenshot 2025-10-18 115250" src="https://github.com/user-attachments/assets/3ad00c9d-7959-479f-aae4-4e3c95ea84fa" />
+<img width="671" height="580" alt="Screenshot 2025-10-18 115337" src="https://github.com/user-attachments/assets/8859d039-b43e-4e8b-acb5-0616c529af84" />
+<img width="722" height="688" alt="Screenshot 2025-10-18 115354" src="https://github.com/user-attachments/assets/02705ec5-9a1a-4fe4-8701-effe9451d9e7" />
+<img width="881" height="783" alt="Screenshot 2025-10-18 115406" src="https://github.com/user-attachments/assets/d453bcd9-3854-4755-83b2-100dae54f998" />
 
 # RESULT:
  Thus, a single layer perceptron model is implemented using python to classify Iris data set.
